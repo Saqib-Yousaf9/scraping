@@ -8,16 +8,26 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const API_URL = process.env.REACT_APP_API_URL;  // Fetch API URL from .env file
+
   const fetchData = async () => {
-    const res = await fetch("http://localhost:5000/get_nap");
-    const json = await res.json();
-    setData(json);
+    try {
+      const res = await fetch(`${API_URL}/get_nap`);
+      const json = await res.json();
+      setData(json);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   const scrapeNow = async () => {
     setLoading(true);
-    await fetch("http://localhost:5000/scrape_now");
-    await fetchData();
+    try {
+      await fetch(`${API_URL}/scrape_now`);
+      await fetchData();
+    } catch (error) {
+      console.error("Error during scrape:", error);
+    }
     setLoading(false);
   };
 
